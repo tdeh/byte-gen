@@ -12,6 +12,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from .converters import byte_str_to_int, int_to_byte_str_leading_zeroes
+
 
 class SequentialByteGenerator(object):
 
@@ -20,13 +22,6 @@ class SequentialByteGenerator(object):
         self._size = size
 
     def get_next(self):
-        byte_str = ""
-        local_chr = chr
-        to_convert = self._current_integer
-
-        while to_convert:
-            byte_str = local_chr(to_convert%256) + byte_str
-            to_convert >>= 8
-
+        byte_str = int_to_byte_str_leading_zeroes(self._current_integer, self._size)
         self._current_integer += 1
-        return byte_str.rjust(self._size, "\x00")
+        return byte_str
