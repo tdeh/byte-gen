@@ -21,13 +21,13 @@ class RandomByteGenerator(object):
         self._choices = [chr(i) for i in range(256)]
         self._size = size
         self._random_size = random_size
-        random.seed(seed)
+        self._random_gen = random.Random(seed)
 
     def _size_range(self):
         if self._random_size:
-            return range(random.randint(1, self._size))
+            return range(self._random_gen.randint(1, self._size))
         else:
             return range(self._size)
 
     def get_next(self):
-        return ''.join(random.choice(self._choices) for _ in self._size_range())
+        return ''.join(self._random_gen.choice(self._choices) for _ in self._size_range())
